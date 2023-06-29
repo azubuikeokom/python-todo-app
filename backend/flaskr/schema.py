@@ -4,7 +4,7 @@ tables = {}
 tables['users'] = (
     "CREATE TABLE `users` ("
     " `id` int PRIMARY KEY AUTO_INCREMENT,"
-    " `username` varchar(30) NOT NULL,"
+    " `username` varchar(30) UNIQUE NOT NULL,"
     " `passwd` varchar(30) NOT NULL"
     ")"
 )
@@ -12,10 +12,9 @@ tables['users'] = (
 tables['todos'] = (
     "CREATE TABLE `todos` ("
     " `id` int PRIMARY KEY AUTO_INCREMENT,"
-    " `author_id` int NOT NULL,"
+    " `author` varchar(30) NOT NULL,"
     " `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
-    " `task` TEXT NOT NULL,"
-    " FOREIGN KEY (author_id) REFERENCES users (id)"
+    " `task` TEXT NOT NULL"
     ")"
 )
 

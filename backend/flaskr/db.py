@@ -5,6 +5,7 @@ import os
 
 
 load_dotenv()
+
 def connectDB(user=os.getenv('DB_USERNAME'),password=os.getenv('DB_PASSWORD'),
                 host=os.getenv('DB_HOST'),database=os.getenv('DATABASE')):
     try:
@@ -50,14 +51,15 @@ def insertUser(data):
 def insertTask(data):
     add_task = (
     "INSERT INTO todos"
-    "(task)"
-    "VALUES(%s)"
+    "(author,task)"
+    "VALUES(%s,%s)"
     )
     cxn = connectDB()
     cursor = cxn.cursor()
     try:
         cursor.execute(add_task,data)
         cxn.commit()
+        print("SUCCESS!")
     except mysql.connector.Error as err:
         print("Failed operation: {}".format(err))
     else:
@@ -68,9 +70,6 @@ def deleteTask(data):
     delete_task=(
         ""
     )
-    cxn=connectDB()
-
-def getRecord(data):
     cxn=connectDB()
 
 def createTables(table_schema):
@@ -87,6 +86,27 @@ def createTables(table_schema):
         print("OK")
         cursor.close()
         cxn.close()
+
+def getAllTasks(user_data):
+    records=[]
+    all_tasks=(
+        " SELECT task "
+        " FROM todos "
+        " WHERE author=%s "
+    )
+    cxn=connectDB()
+    cursor = cxn.cursor() 
+    try:
+        cursor.execute(all_tasks,user_data)
+        for row in cursor:
+            records.append(row)
+        print("SUCCESS")
+    except mysql.connector.Error as err:
+        print("Operation Failed: {}".format(err))   
+    else:
+        cursor.close()
+        cxn.close()
+        return records
 
 
 
