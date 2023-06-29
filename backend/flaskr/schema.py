@@ -1,0 +1,28 @@
+from flaskr import db
+
+tables = {}
+tables['users'] = (
+    "CREATE TABLE `users` ("
+    " `id` int PRIMARY KEY AUTO_INCREMENT,"
+    " `username` varchar(30) NOT NULL,"
+    " `passwd` varchar(30) NOT NULL"
+    ")"
+)
+
+tables['todos'] = (
+    "CREATE TABLE `todos` ("
+    " `id` int PRIMARY KEY AUTO_INCREMENT,"
+    " `author_id` int NOT NULL,"
+    " `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+    " `task` TEXT NOT NULL,"
+    " FOREIGN KEY (author_id) REFERENCES users (id)"
+    ")"
+)
+
+def create_schema():
+  for table in tables:
+    table_schema = tables[table]
+    print("Creating table {}: ".format(table), end='')
+    db.createTables(table_schema)
+
+
